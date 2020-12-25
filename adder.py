@@ -68,7 +68,7 @@ async def plugin_add(client, message):
 #@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
 #async def plugin_remove(client, message):
 
-HELP.add_help(["plist"], "List all the installed plugin")
+HELP.add_help(["plist"], "List all the installed plugin", "Yeah, list every plugin..no more..")
 @alemiBot.on_message(is_superuser & filterCommand(["plist"], list(alemiBot.prefixes)))
 async def plugin_list(client, message):
     try:
