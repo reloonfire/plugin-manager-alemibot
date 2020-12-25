@@ -59,7 +59,7 @@ async def plugin_add(client, message):
         await edit_or_reply(msg, f"`$ plugin_add`\n`[!] → ` " + str(e))
 
 HELP.add_help(["plugin_remove"], "Remove a plugin from the bot", "To see the list of plugins use .plugin_list", args="<plugin>")
-@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
+@alemiBot.on_message(is_superuser & filterCommand(["plugin_remove"], list(alemiBot.prefixes)))
 async def plugin_remove(client, message):
     try:
         plugin = ""
