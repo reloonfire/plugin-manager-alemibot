@@ -84,7 +84,7 @@ async def plugin_list(client, message):
         matches = re.findall(r"\[submodule \"(?P<plugin>.*)\"]", stdout.decode())
         text = "Plugins installed:\n"
         for match in matches:
-            text += match["plugin"]
+            text += match
 
         if text != "Plugins installed:\n":
             await edit_or_reply(message, text)
