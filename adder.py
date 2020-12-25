@@ -30,13 +30,15 @@ async def plugin_add(client, message):
 
     match = None
 
-    if message.command["dir"]:
-        folder = message.command["dir"]
-
-    if message.command["branch"]:
-        branch = message.command["branch"]
-    else:
-        branch = "main"
+    if "dir" in message.command:
+        if message.command["dir"]:
+            folder = message.command["dir"]
+    
+    if "branch" in message.command:
+        if message.command["branch"]:
+            branch = message.command["branch"]
+        else:
+            branch = "main"
 
     if "arg" in message.command:
         link = message.command["arg"]
