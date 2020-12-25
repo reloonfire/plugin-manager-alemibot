@@ -24,21 +24,12 @@ HELP.add_help(["import"], "Import a plugins from a git repo!",
 
 @alemiBot.on_message(is_superuser & filterCommand(["import"], list(alemiBot.prefixes), options={"dir": ["-d"], "branch": ["-b"]}))
 async def plugin_add(client, message):
-    branch = ""
-    folder = ""
+    branch = message.command["branch"] if "branch" in message.command else "main"
+    folder = message.command["dir"] if "dir" in message.command else ""
     link = ""
 
     match = None
 
-    if "dir" in message.command:
-        if message.command["dir"]:
-            folder = message.command["dir"]
-    
-    if "branch" in message.command:
-        if message.command["branch"]:
-            branch = message.command["branch"]
-        else:
-            branch = "main"
 
     if "arg" in message.command:
         link = message.command["arg"]
