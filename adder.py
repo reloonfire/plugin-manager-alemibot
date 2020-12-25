@@ -18,9 +18,9 @@ from plugins.help import HelpCategory
 logger = logging.getLogger(__name__)
 
 HELP = HelpCategory("Plugins")
-HELP.add_help(["import"], "Import a plugins from a git repo!",
+HELP.add_help(["plugin_add"], "Import a plugins from a git repo!",
               "Skip all the steps to add a plugins simply by run this command", args="[-b branch] [-d directory] <link-repo>")
-@alemiBot.on_message(is_superuser & filterCommand(["import"], list(alemiBot.prefixes), options={"dir": ["-d"], "branch": ["-b"]}))
+@alemiBot.on_message(is_superuser & filterCommand(["plugin_add"], list(alemiBot.prefixes), options={"dir": ["-d"], "branch": ["-b"]}))
 async def plugin_add(client, message):
     try:
         branch = message.command["branch"] if "branch" in message.command else "main"
@@ -64,12 +64,12 @@ async def plugin_add(client, message):
         traceback.print_exc()
         await edit_or_reply(msg, f"`$ import`\n`[!] → ` " + str(e))
 
-#HELP.add_help(["remove"], "Remove a plugin from the bot", "To see the list of plugins use .plist", args="<plugin>")
+#HELP.add_help(["plugin_remove"], "Remove a plugin from the bot", "To see the list of plugins use .plist", args="<plugin>")
 #@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
 #async def plugin_remove(client, message):
 
-HELP.add_help(["plist"], "List all the installed plugin", "Yeah, list every plugin..no more..")
-@alemiBot.on_message(is_superuser & filterCommand(["plist"], list(alemiBot.prefixes)))
+HELP.add_help(["plugin_list"], "List all the installed plugin", "Yeah, list every plugin..no more..")
+@alemiBot.on_message(is_superuser & filterCommand(["plugin_list"], list(alemiBot.prefixes)))
 async def plugin_list(client, message):
     try:
         msg = await edit_or_reply(message, f"Listing plugins...")
