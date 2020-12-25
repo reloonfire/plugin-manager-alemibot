@@ -55,12 +55,12 @@ async def plugin_add(client, message):
         logger.info(
             f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
         proc = await asyncio.create_subprocess_shell(
-            "git submodule add {link} plugins/{folder}",
+            f"git submodule add {link} plugins/{folder}",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT)
 
         await asyncio.create_subprocess_shell(
-            "echo \"        branch = {branch}\" >> .gitmodules",
+            f"echo \"        branch = {branch}\" >> .gitmodules",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT)
 
