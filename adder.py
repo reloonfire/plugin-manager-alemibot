@@ -24,36 +24,36 @@ HELP.add_help(["import"], "Import a plugins from a git repo!",
 
 @alemiBot.on_message(is_superuser & filterCommand(["import"], list(alemiBot.prefixes), options={"dir": ["-d"], "branch": ["-b"]}))
 async def plugin_add(client, message):
-    branch = message.command["branch"] if "branch" in message.command else "main"
-    folder = message.command["dir"] if "dir" in message.command else ""
-    link = ""
-
-    match = None
-
-
-    if "arg" in message.command:
-        link = message.command["arg"]
-        match = re.search(
-            r"https:\/\/github.com\/(?P<dev>.*)\/(?P<name>.*).git", link)
-        if match is None:
-            return await edit_or_reply(message, "`[!] → ` The link given is incorrect")
-        else:
-            if folder == "":
-                folder = match["name"]
-    else:
-        return await edit_or_reply(message, "`[!] → ` No link provided")
-
-    msg = await edit_or_reply(message, f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
     try:
+        branch = message.command["branch"] if "branch" in message.command else "main"
+        folder = message.command["dir"] if "dir" in message.command else ""
+        link = ""
+
+        match = None
+
+        if "arg" in message.command:
+            link = message.command["arg"]
+            match = re.search(
+                r"https:\/\/github.com\/(?P<dev>.*)\/(?P<name>.*).git", link)
+            if match is None:
+                return await edit_or_reply(message, "`[!] → ` The link given is incorrect")
+            else:
+                if folder == "":
+                    folder = match["name"]
+        else:
+            return await edit_or_reply(message, "`[!] → ` No link provided")
+
+        msg = await edit_or_reply(message, f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
+
         logger.info(
             f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
         proc = await asyncio.create_subprocess_shell(
-            f"git submodule add {link} plugins/{folder}",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.STDOUT)
+          f"git submodule add {link} plugins/{folder}",
+          stdout=asyncio.subprocess.PIPE,
+          stderr=asyncio.subprocess.STDOUT)
 
         await asyncio.create_subprocess_shell(
-            f"echo \"        branch = {branch}\" >> .gitmodules",
+           f"echo \"        branch = {branch}\" >> .gitmodules",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT)
 
