@@ -1,9 +1,10 @@
 # plugin-adder-alemibot
-Tool to import plugins
+Tool to manage plugins
 
 ## Usage:
+ADD:
 ```
-.import [-b branch] [-d directory] <link-repo>
+.plugin_add [-b branch] [-d directory] <link-repo>
 ```
 ### Info about:
 > **-b** gives you the possibility to choose a specific branch<br>
@@ -16,9 +17,32 @@ Tool to import plugins
 
 ### Example:
 ```
-.import -b main -d yt-downloader github.com/reloonfire/yt-downloader-alemibot.git
+.plugin_add -b main -d plugin_dir github.com/user/plugin.git
 ```
+After that run **.update -force** to add the new plugins.
 
+LIST:
+
+```
+.plugin_list
+```
+### Info about:
+This command will print all the submodules installed 
+
+REMOVE:
+
+```
+.plugin_remove <plugin>
+```
+### Info about:
+This command will delete the plugin from the system
+
+> **\<plugin>** a valid plugin installed, see the list with .plugin_list
+
+### Example:
+```
+.plugin_remove plugins/plugin_dir
+  ```
 ## Installation:
 To install this plugin you need:
  - git
