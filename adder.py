@@ -60,7 +60,7 @@ async def plugin_add(client, message):
             stderr=asyncio.subprocess.STDOUT)
 
         await asyncio.create_subprocess_shell(
-            "echo \"  branch = {branch}\" >> .gitmodules",
+            "echo \"        branch = {branch}\" >> .gitmodules",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT)
 
@@ -76,4 +76,4 @@ async def plugin_add(client, message):
 
     except Exception as e:
         traceback.print_exc()
-        await edit_or_reply(msg, f"`$ yt-down`\n`[!] → ` " + str(e))
+        await edit_or_reply(msg, f"`$ import`\n`[!] → ` " + str(e))
