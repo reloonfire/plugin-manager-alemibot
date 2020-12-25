@@ -48,14 +48,9 @@ async def plugin_add(client, message):
         logger.info(
             f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
         proc = await asyncio.create_subprocess_shell(
-          f"git submodule add {link} plugins/{folder}",
+          f"git submodule add {link} plugins/{folder} && echo \"        branch = {branch}\" >> .gitmodules",
           stdout=asyncio.subprocess.PIPE,
           stderr=asyncio.subprocess.STDOUT)
-
-        await asyncio.create_subprocess_shell(
-           f"echo \"        branch = {branch}\" >> .gitmodules",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.STDOUT)
 
         stdout, stderr = await proc.communicate()
         output = cleartermcolor(stdout.decode())
