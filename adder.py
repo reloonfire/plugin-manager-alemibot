@@ -79,7 +79,7 @@ async def plugin_remove(client, message):
         await edit_or_reply(message, f"{plugin} removed!")
     except Exception as e:
         traceback.print_exc()
-        await edit_or_reply(msg, f"`$ plugin_remove`\n`[!] → ` " + str(e))
+        await edit_or_reply(message, f"`$ plugin_remove`\n`[!] → ` " + str(e))
 
 HELP.add_help(["plugin_list"], "List all the installed plugin", "Yeah, list every plugin..no more..")
 @alemiBot.on_message(is_superuser & filterCommand(["plugin_list"], list(alemiBot.prefixes)))
