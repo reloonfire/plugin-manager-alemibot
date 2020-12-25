@@ -20,8 +20,6 @@ logger = logging.getLogger(__name__)
 HELP = HelpCategory("Plugins")
 HELP.add_help(["import"], "Import a plugins from a git repo!",
               "Skip all the steps to add a plugins simply by run this command", args="[-b branch] [-d directory] <link-repo>")
-
-
 @alemiBot.on_message(is_superuser & filterCommand(["import"], list(alemiBot.prefixes), options={"dir": ["-d"], "branch": ["-b"]}))
 async def plugin_add(client, message):
     try:
@@ -61,6 +59,35 @@ async def plugin_add(client, message):
             await client.send_document(message.chat.id, out)
         else:
             await msg.edit(tokenize_lines(f"$ import\n\n" + output, mode='html'), parse_mode='html')
+
+    except Exception as e:
+        traceback.print_exc()
+        await edit_or_reply(msg, f"`$ import`\n`[!] → ` " + str(e))
+
+#HELP.add_help(["remove"], "Remove a plugin from the bot", "To see the list of plugins use .plist", args="<plugin>")
+#@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
+#async def plugin_remove(client, message):
+
+HELP.add_help(["plist"], "List all the installed plugin")
+@alemiBot.on_message(is_superuser & filterCommand(["plist"], list(alemiBot.prefixes)))
+async def plugin_list(client, message):
+    try:
+        msg = await edit_or_reply(message, f"Listing plugins...")
+        logger.info(
+            f"Listing plugins...")
+        proc = await asyncio.create_subprocess_shell(
+          "cat .gitmodules",
+          stdout=asyncio.subprocess.PIPE,
+          stderr=asyncio.subprocess.STDOUT)
+
+        stdout, stderr = await proc.communicate()
+        matches = re.findall(r"\[submodule \"(?P<plugin>.*)\"]", stdout.decode())
+        text = "Plugins installed:\n"
+        for match in matches:
+            text += match["plugin"]
+
+        if text != "Plugins installed:\n":
+            await edit_or_reply(message, text)
 
     except Exception as e:
         traceback.print_exc()
