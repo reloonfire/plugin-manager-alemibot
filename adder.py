@@ -50,7 +50,7 @@ async def plugin_add(client, message):
     else:
         return await edit_or_reply(message, "`[!] → ` No link provided")
 
-    msg = await edit_or_reply(message, "` → ` Adding plugin...")
+    msg = await edit_or_reply(message, f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
     try:
         logger.info(
             f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
