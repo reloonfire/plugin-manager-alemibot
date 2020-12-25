@@ -52,7 +52,7 @@ async def plugin_add(client, message):
 
         stdout, stderr = await proc.communicate()
         output = cleartermcolor(stdout.decode())
-        msg.edit(f"[✓]{link} by {match['dev']} installed!")
+        await msg.edit(f"[✓]{link} by {match['dev']} installed!")
 
     except Exception as e:
         traceback.print_exc()
