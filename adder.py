@@ -46,27 +46,40 @@ async def plugin_add(client, message):
         logger.info(
             f"Adding plugin → \"{match['name']}\" by dev/{match['dev']}")
         proc = await asyncio.create_subprocess_shell(
-          f"git submodule add {link} plugins/{folder} && echo \"        branch = {branch}\" >> .gitmodules",
+          f"git submodule add -b {branch} {link} plugins/{folder}",
           stdout=asyncio.subprocess.PIPE,
           stderr=asyncio.subprocess.STDOUT)
 
         stdout, stderr = await proc.communicate()
         output = cleartermcolor(stdout.decode())
-        if len(output) > 4080:
-            await msg.edit(f"```$ import\n → Output too long, sending as file```")
-            out = io.BytesIO((f"$ import\n" + output).encode('utf-8'))
-            out.name = "output.txt"
-            await client.send_document(message.chat.id, out)
-        else:
-            await msg.edit(tokenize_lines(f"$ import\n\n" + output, mode='html'), parse_mode='html')
+        msg.edit(f"[✓]{link} by {match['dev']} installed!")
 
     except Exception as e:
         traceback.print_exc()
-        await edit_or_reply(msg, f"`$ import`\n`[!] → ` " + str(e))
+        await edit_or_reply(msg, f"`$ plugin_add`\n`[!] → ` " + str(e))
 
-#HELP.add_help(["plugin_remove"], "Remove a plugin from the bot", "To see the list of plugins use .plist", args="<plugin>")
-#@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
-#async def plugin_remove(client, message):
+HELP.add_help(["plugin_remove"], "Remove a plugin from the bot", "To see the list of plugins use .plugin_list", args="<plugin>")
+@alemiBot.on_message(is_superuser & filterCommand(["remove"], list(alemiBot.prefixes)))
+async def plugin_remove(client, message):
+    try:
+        plugin = ""
+        if "arg" not in message.command:
+            return await edit_or_reply(message, "`[!] → ` No plugin provided")
+        else:
+            plugin = message.command["arg"]
+        
+        logger.info(
+            f"Removing plugin → \"{plugin}\"")
+        proc = await asyncio.create_subprocess_shell(
+          f"git submodule deinit -f {plugin} && rm -rf .git/modules/{plugin} && git rm -f {plugin}",
+          stdout=asyncio.subprocess.PIPE,
+          stderr=asyncio.subprocess.STDOUT)
+
+        stdout, stderr = await proc.communicate()
+        await edit_or_reply(message, f"{plugin} removed!")
+    except Exception as e:
+        traceback.print_exc()
+        await edit_or_reply(msg, f"`$ plugin_remove`\n`[!] → ` " + str(e))
 
 HELP.add_help(["plugin_list"], "List all the installed plugin", "Yeah, list every plugin..no more..")
 @alemiBot.on_message(is_superuser & filterCommand(["plugin_list"], list(alemiBot.prefixes)))
@@ -88,7 +101,9 @@ async def plugin_list(client, message):
 
         if text != "Plugins installed:\n":
             await edit_or_reply(message, text)
+        else:
+            await edit_or_reply(message, "No plugins found.")
 
     except Exception as e:
         traceback.print_exc()
-        await edit_or_reply(msg, f"`$ import`\n`[!] → ` " + str(e))
+        await edit_or_reply(msg, f"`$ plugin_list`\n`[!] → ` " + str(e))
