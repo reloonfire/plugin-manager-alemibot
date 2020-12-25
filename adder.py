@@ -52,7 +52,15 @@ async def plugin_add(client, message):
           stdout=asyncio.subprocess.PIPE,
           stderr=asyncio.subprocess.STDOUT)
 
-        msg = await edit_or_reply(message, f"Plugin added → \"{match['name']}\" by dev/{match['dev']}")
+        stdout, stderr = await proc.communicate()
+        output = cleartermcolor(stdout.decode())
+        if len(output) > 4080:
+            await msg.edit(f"```$ import\n → Output too long, sending as file```")
+            out = io.BytesIO((f"$ import\n" + output).encode('utf-8'))
+            out.name = "output.txt"
+            await client.send_document(message.chat.id, out)
+        else:
+            await msg.edit(tokenize_lines(f"$ import\n\n" + output, mode='html'), parse_mode='html')
 
     except Exception as e:
         traceback.print_exc()
