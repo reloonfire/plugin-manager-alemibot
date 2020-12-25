@@ -49,10 +49,10 @@ To install this plugin you need:
 
  sh:
   ```bash
-     git submodule add git@github.com:reloonfire/plugin-adder-alemibot.git plugins/plugin-adder
+     git submodule add git@github.com:reloonfire/plugin-manager-alemibot.git plugins/plugin-manager
   ```
   https:
    ```bash
-     git submodule add https://github.com/reloonfire/plugin-adder-alemibot.git plugins/plugin-adder
+     git submodule add https://github.com/reloonfire/plugin-manager-alemibot.git plugins/plugin-manager
   ```
   and just restart the bot :D
