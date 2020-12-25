@@ -38,7 +38,7 @@ async def plugin_add(client, message):
     else:
         branch = "main"
 
-    if "arg" not in message.command:
+    if "arg" in message.command:
         link = message.command["arg"]
         match = re.search(
             r"https:\/\/github.com\/(?P<dev>.*)\/(?P<name>.*).git", link)
